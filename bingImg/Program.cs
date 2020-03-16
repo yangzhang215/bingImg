@@ -20,10 +20,17 @@ namespace bingImg
             string path = Application.StartupPath + "\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".jpg";
             if (!File.Exists(path))
             {
-                WebRequest req = WebRequest.Create("https://api.sunweihu.com/api/bing1/api.php");
-                Image img = Image.FromStream(req.GetResponse().GetResponseStream());
-                img.Save(path);
-                SystemParametersInfo(20, 0, path, 0x2);
+                try
+                {
+                    WebRequest req = WebRequest.Create("https://api.sunweihu.com/api/bing1/api.php");
+                    Image img = Image.FromStream(req.GetResponse().GetResponseStream());
+                    img.Save(path);
+                    SystemParametersInfo(20, 0, path, 0x2);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("bingImg", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             Application.Exit();
         }
