@@ -1,0 +1,6 @@
+E:\bingImg\bingImg\bin\Debug\bingImg.exe
+E:\bingImg\bingImg\bin\Debug\bingImg.pdb
+E:\bingImg\bingImg\obj\Debug\bingImg.Properties.Resources.resources
+E:\bingImg\bingImg\obj\Debug\bingImg.csproj.GenerateResource.Cache
+E:\bingImg\bingImg\obj\Debug\bingImg.exe
+E:\bingImg\bingImg\obj\Debug\bingImg.pdb

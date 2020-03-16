@@ -1,6 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace bingImg
 {
@@ -14,7 +17,23 @@ namespace bingImg
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            string path = Application.StartupPath + "\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".jpg";
+            if (!File.Exists(path))
+            {
+                WebRequest req = WebRequest.Create("https://api.sunweihu.com/api/bing1/api.php");
+                Image img = Image.FromStream(req.GetResponse().GetResponseStream());
+                img.Save(path);
+                SystemParametersInfo(20, 0, path, 0x2);
+            }
+            Application.Exit();
         }
+
+        [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
+        public static extern int SystemParametersInfo(
+            int uAction,
+            int uParam,
+            string lpvParam,
+            int fuWinIni
+        );
     }
 }
