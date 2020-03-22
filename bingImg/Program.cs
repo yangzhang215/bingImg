@@ -24,13 +24,16 @@ namespace bingImg
                 {
                     WebRequest req = WebRequest.Create("https://api.sunweihu.com/api/bing1/api.php");
                     Image img = Image.FromStream(req.GetResponse().GetResponseStream());
-                    img.Save(path);
-                    SystemParametersInfo(20, 0, path, 0x2);
+                    img.Save(path);                    
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("bingImg", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+            }
+            else
+            {
+                SystemParametersInfo(20, 0, path, 0x2);
             }
             Application.Exit();
         }
