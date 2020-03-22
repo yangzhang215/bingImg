@@ -24,7 +24,8 @@ namespace bingImg
                 {
                     WebRequest req = WebRequest.Create("https://api.sunweihu.com/api/bing1/api.php");
                     Image img = Image.FromStream(req.GetResponse().GetResponseStream());
-                    img.Save(path);                    
+                    img.Save(path);                
+                    SystemParametersInfo(20, 0, path, 0x2);     
                 }
                 catch (Exception ex)
                 {
