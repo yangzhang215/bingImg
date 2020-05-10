@@ -4,6 +4,7 @@ using System.Net;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace bingImg
 {
@@ -22,14 +23,16 @@ namespace bingImg
             {
                 try
                 {
-                    WebRequest req = WebRequest.Create("https://api.sunweihu.com/api/bing1/api.php");
-                    Image img = Image.FromStream(req.GetResponse().GetResponseStream());
-                    img.Save(path);                
-                    SystemParametersInfo(20, 0, path, 1);     
+                    string htmlApi = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN";
+                    string reqString = getHtml(htmlApi);
+                    string htmlImg = getImgHtml(reqString);
+                    Image img = getImg(htmlImg);
+                    img.Save(path);
+                    SystemParametersInfo(20, 0, path, 1);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("bingImg", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(ex.Message,"bingImg",  MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             else
@@ -37,6 +40,30 @@ namespace bingImg
                 SystemParametersInfo(20, 0, path, 1);
             }
             Application.Exit();
+        }
+
+        public static string getHtml(string html)
+        {
+            WebRequest req = WebRequest.Create(html);
+            Stream reqStream = req.GetResponse().GetResponseStream();
+            StreamReader reqStreamReader = new StreamReader(reqStream, Encoding.UTF8);
+            return reqStreamReader.ReadToEnd(); 
+        }
+
+        public static string getImgHtml(string html)
+        {
+            int index = html.IndexOf("url") + 6;
+            html = "https://cn.bing.com" + html.Substring(index);
+            index = html.IndexOf(".jpg") + 4;
+            html = html.Substring(0, index);
+            return html; 
+        }
+
+        public static Image getImg(string html)
+        {
+            WebRequest req = WebRequest.Create(html);
+            return Image.FromStream(req.GetResponse().GetResponseStream());
+
         }
 
         [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
